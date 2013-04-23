@@ -14,14 +14,12 @@
   (map #(str (apply str (interpose \, %)) "\n")
        (cons (map pr-str headers) rows)))
 
-(defn- build-output [input]
-  (let [headers (get-headers input)
-        rows (get-rows headers input)]
-    (format-output headers rows)))
-
-(defn- get-input [input-spec]
+(defn- build-output [input-spec]
   (with-open [r (io/reader input-spec)]
-    (parse-stream r)))
+    (let [input (parsed-seq r)
+          headers (get-headers input)
+          rows (get-rows headers input)]
+      (format-output headers rows))))
 
 (defn- write-csv [output output-spec]
   (with-open [w (io/writer output-spec)]
@@ -29,8 +27,7 @@
       (.write w l))))
 
 (defn- json->csv [{:keys [input-spec output-spec]}]
-  (-> (get-input input-spec)
-      (build-output)
+  (-> (build-output input-spec)
       (write-csv ,,, output-spec)))
 
 (defn -main [& args]

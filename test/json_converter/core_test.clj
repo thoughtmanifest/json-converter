@@ -26,10 +26,3 @@
              "\"value1a\",\"value2\",nil\n"
              "\"value1b\",nil,\"value3\"\n")
            (#'json-converter.core/format-output headers rows)))))
-
-(deftest build-output
-  (testing "input seq => csv formatted output"
-    (is (= '("\"key1\",\"key2\",\"key3\"\n"
-             "\"value1a\",\"value2\",nil\n"
-             "\"value1b\",nil,\"value3\"\n")
-           (#'json-converter.core/build-output input-seq)))))
